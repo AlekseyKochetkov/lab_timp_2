@@ -1,18 +1,37 @@
 #include "stdafx.h"
 #include "Encode.h"
+#include <ctype.h>
 
 
-char* Encode::EnCode()
+char* Encode::Code()
 {
 	Error();
 	int i = 0;
 	Deleted();
+	Up();
 	while (Point[i] != '\0')
 	{
 		if (Point[i]+Key>90)
 			Point[i] = Point[i] - (26 - Key);
 		else
 		Point[i] = Point[i] + Key;
+		i++;
+	}
+	return Point;
+}
+
+char * Encode::UnCode()
+{
+	Error();
+	int i = 0;
+	Deleted();
+	Up();
+	while (Point[i] != '\0')
+	{
+		if (Point[i] - Key<65)
+			Point[i] = Point[i] + (26 - Key);
+		else
+			Point[i] = Point[i] - Key;
 		i++;
 	}
 	return Point;
@@ -60,3 +79,14 @@ void Encode::Deleted()
 		i++;
 	}
 }
+
+void Encode::Up()
+{
+	int i = 0;
+	while (Point[i] != '\0')
+	{
+		Point[i] = toupper( Point[i]);
+		i++;
+	}
+}
+
