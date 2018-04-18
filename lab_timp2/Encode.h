@@ -8,5 +8,6 @@ public:
 private:
 	int Key;
 	void Error();
+	void Deleted();
 };
 

@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "Encode.h"
 
+
 char* Encode::EnCode()
 {
-	int i = 0;
 	Error();
+	int i = 0;
+	Deleted();
 	while (Point[i] != '\0')
 	{
 		if (Point[i]+Key>90)
@@ -30,8 +32,31 @@ void Encode::Error()
 	i = 0;
 	while (Point[i] != '\0')
 	{
-		if ( (Point[i] >= 'À' ) && (Point[i] <= 'ÿ') )
+		if ( ( (Point[i] >= 'À' ) && (Point[i] <= 'ÿ') ) | (Point[i] <= '¨') | (Point[i] <= '¸'))
 			throw 3;
+		i++;
+	}
+}
+
+void Encode::Deleted()
+{
+	int i = 0;
+	int j = 0;
+	while (Point[i] != '\0')
+	{
+		if (((Point[i] >= 65) && (Point[i] <= 90)) | ((Point[i] >= 97) && (Point[i] <= 122)))
+		{
+		}
+		else
+		{
+	      j = i - 1;
+		     while (Point[i] != '\0')
+		    {
+				 Point[i] = Point[i + 1];
+			   i++;
+		    }
+		  i = j;
+	    }
 		i++;
 	}
 }
