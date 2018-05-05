@@ -1,92 +1,91 @@
 #include "stdafx.h"
-#include "Encode.h"
 #include <ctype.h>
+#include <string>
+#include "Encode.h"
+using namespace std;
 
 
-char* Encode::Code()
+string Encode::Code(string Text)
 {
-	Error();
+	Error(Text);
 	int i = 0;
-	Deleted();
-	Up();
-	while (Point[i] != '\0')
+	Text=Deleted(Text);
+	Text=Up(Text);
+	while (Text[i] != '\0')
 	{
-		if (Point[i]+Key>90)
-			Point[i] = Point[i] - (26 - Key);
+		if (Text[i]+Key>'Z')
+			Text[i] = Text[i] - (26 - Key);
 		else
-		Point[i] = Point[i] + Key;
+			Text[i] = Text[i] + Key;
 		i++;
 	}
-	return Point;
+	return string(Text);
 }
 
-char * Encode::UnCode()
+string Encode::UnCode(string Text)
 {
-	Error();
+	Error(Text);
 	int i = 0;
-	Deleted();
-	Up();
-	while (Point[i] != '\0')
+	Text=Deleted(Text);
+	Text=Up(Text);
+	while (Text[i] != '\0')
 	{
-		if (Point[i] - Key<65)
-			Point[i] = Point[i] + (26 - Key);
+		if (Text[i] - Key<'A')
+			Text[i] = Text[i] + (26 - Key);
 		else
-			Point[i] = Point[i] - Key;
+			Text[i] = Text[i] - Key;
 		i++;
 	}
-	return Point;
+	return string(Text);
 }
 
-void Encode::Error()
+void Encode::Error(string Text)
 {
 	int i = 0;
 	if ((Key >= 26) | (Key<0))
 		throw 1;
-	while (Point[i] != '\0')
+	while (Text[i] != '\0')
 	{
-		if ((Point[i] >= 48) && (Point[i] <= 57))
+		if ((Text[i] >= '0') && (Text[i] <= '9'))
 			throw 2;
 		i++;
 	}
 	i = 0;
-	while (Point[i] != '\0')
+	while (Text[i] != '\0')
 	{
-		if ( ( (Point[i] >= 'À' ) && (Point[i] <= 'ÿ') ) | (Point[i] <= '¨') | (Point[i] <= '¸'))
+		if ( ( (Text[i] >= 'À' ) && (Text[i] <= 'ÿ') ) | (Text[i] <= '¨') | (Text[i] <= '¸'))
 			throw 3;
 		i++;
 	}
 }
 
-void Encode::Deleted()
+string Encode::Deleted(string Text)
 {
 	int i = 0;
-	int j = 0;
-	while (Point[i] != '\0')
+	while (Text[i] != '\0')
 	{
-		if (((Point[i] >= 65) && (Point[i] <= 90)) | ((Point[i] >= 97) && (Point[i] <= 122)))
+		if (((Text[i] >= 'A') && (Text[i] <= 'Z')) | ((Text[i] >= 'a') && (Text[i] <= 'z')))
 		{
 		}
 		else
 		{
-	      j = i - 1;
-		     while (Point[i] != '\0')
-		    {
-				 Point[i] = Point[i + 1];
-			   i++;
-		    }
-		  i = j;
+        Text.erase(i, 1);
+		i = i - 1;
 	    }
 		i++;
 	}
+	return string(Text);
 }
 
-void Encode::Up()
+string Encode::Up(string Text)
 {
 	int i = 0;
-	while (Point[i] != '\0')
+	while (Text[i] != '\0')
 	{
-		Point[i] = toupper( Point[i]);
+		Text[i] = toupper(Text[i]);
 		i++;
 	}
+	return string(Text);
 }
+
 

@@ -1,15 +1,16 @@
 #pragma once
+#include <string>
+using namespace std;
 class Encode
 {
 public:
-	char* Point;
-	Encode(char* p , const int key): Point(p), Key(key){}
-	char* Code();
-	char* UnCode();
+	Encode(const int key):Key(key){}
+	string Code(string Text);
+	string UnCode(string Text);
 private:
 	int Key;
-	void Error();
-	void Deleted();
-	void Up();
+	void Error(const string Text);
+	string Deleted(string Text);
+	string Up(string Text);
 };
 
