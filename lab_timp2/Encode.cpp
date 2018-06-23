@@ -2,48 +2,47 @@
 #include <ctype.h>
 #include <string>
 #include "Encode.h"
+#include <iostream>
 using namespace std;
 
 
-string Encode::Code(string Text)
+string Encode::Encrypt(const string Text)
 {
-	Error(Text);
+	Encrypt_Error(Text);
 	int i = 0;
-	Text=Deleted(Text);
-	Text=Up(Text);
-	while (Text[i] != '\0')
+	text=Deleted(Text);
+	text=Up(text);
+	while (text[i] != '\0')
 	{
-		if (Text[i]+Key>'Z')
-			Text[i] = Text[i] - (26 - Key);
+		if (text[i]+Key>'Z')
+			text[i] = text[i] - (max - Key);
 		else
-			Text[i] = Text[i] + Key;
+			text[i] = text[i] + Key;
 		i++;
 	}
-	return string(Text);
+	return string(text);
 }
 
-string Encode::UnCode(string Text)
+string Encode::Decrypt(const string Text)
 {
-	Error(Text);
+	Decrypt_Error(Text);
 	int i = 0;
-	Text=Deleted(Text);
-	Text=Up(Text);
-	while (Text[i] != '\0')
+	text = Text;
+	while (text[i] != '\0')
 	{
-		if (Text[i] - Key<'A')
-			Text[i] = Text[i] + (26 - Key);
+		if ((text[i] - Key)<'A')
+			text[i] = text[i] + (max - Key);
 		else
-			Text[i] = Text[i] - Key;
+			text[i] = text[i] - Key;
 		i++;
 	}
-	return string(Text);
+	return string(text);
 }
 
-void Encode::Error(string Text)
+void Encode::Encrypt_Error(string Text)
 {
+	KeyError();
 	int i = 0;
-	if ((Key >= 26) | (Key<0))
-		throw 1;
 	while (Text[i] != '\0')
 	{
 		if ((Text[i] >= '0') && (Text[i] <= '9'))
@@ -59,33 +58,54 @@ void Encode::Error(string Text)
 	}
 }
 
+void Encode::Decrypt_Error(const string Text)
+{
+	KeyError();
+	int i = 0;
+	while (Text[i] != '\0')
+	{
+		if ((Text[i] >= 'A') && (Text[i] <= 'Z'))
+		{ 
+		}
+		else
+			throw 4;
+		i++;
+	}
+}
+
+void Encode::KeyError()
+{
+	if ((Key >= max) | (Key <= 0))
+		throw 1;
+}
+
 string Encode::Deleted(string Text)
 {
 	int i = 0;
-	while (Text[i] != '\0')
+	text = Text;
+	while (text[i] != '\0')
 	{
-		if (((Text[i] >= 'A') && (Text[i] <= 'Z')) | ((Text[i] >= 'a') && (Text[i] <= 'z')))
+		if (((text[i] >= 'A') && (text[i] <= 'Z')) | ((text[i] >= 'a') && (text[i] <= 'z')))
 		{
+			i++;
 		}
 		else
 		{
-        Text.erase(i, 1);
-		i = i - 1;
+		text.erase(i, 1);
 	    }
-		i++;
 	}
-	return string(Text);
+	return string(text);
 }
 
-string Encode::Up(string Text)
+string Encode::Up(string text)
 {
 	int i = 0;
-	while (Text[i] != '\0')
+	while (text[i] != '\0')
 	{
-		Text[i] = toupper(Text[i]);
+		text[i] = toupper(text[i]);
 		i++;
 	}
-	return string(Text);
+	return string(text);
 }
 
 
